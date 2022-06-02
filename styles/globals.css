@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .nav-item {
+    @apply hover:text-red-700 text-red-500  active:text-base   border-red-500 duration-100 transition-all;
+  }
+  .nav-active {
+    @apply text-red-700 border-b-4 border-red-700 rounded-b-sm px-2 mb-5;
+  }
+}

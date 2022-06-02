@@ -1,65 +1,54 @@
-import Link from 'next/link'
-import dbConnect from '../lib/dbConnect'
-import Pet from '../models/Pet'
+import dbConnect from "../lib/dbConnect";
+import Book from "../models/Book";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import BookCard from "../components/BookCard";
+const Index = ({ books }) => {
+  const router = useRouter();
+  return (
+    <>
+      <Head>
+        <link
+          rel='stylesheet'
+          href='https://fonts.googleapis.com/icon?family=Material+Icons'
+        />
 
-const Index = ({ pets }) => (
-  <>
-    {/* Create a card for each pet */}
-    {pets.map((pet) => (
-      <div key={pet._id}>
-        <div className="card">
-          <img src={pet.image_url} />
-          <h5 className="pet-name">{pet.name}</h5>
-          <div className="main-content">
-            <p className="pet-name">{pet.name}</p>
-            <p className="owner">Owner: {pet.owner_name}</p>
-
-            {/* Extra Pet Info: Likes and Dislikes */}
-            <div className="likes info">
-              <p className="label">Likes</p>
-              <ul>
-                {pet.likes.map((data, index) => (
-                  <li key={index}>{data} </li>
-                ))}
-              </ul>
-            </div>
-            <div className="dislikes info">
-              <p className="label">Dislikes</p>
-              <ul>
-                {pet.dislikes.map((data, index) => (
-                  <li key={index}>{data} </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="btn-container">
-              <Link href="/[id]/edit" as={`/${pet._id}/edit`}>
-                <button className="btn edit">Edit</button>
-              </Link>
-              <Link href="/[id]" as={`/${pet._id}`}>
-                <button className="btn view">View</button>
-              </Link>
-            </div>
+        <link
+          rel='stylesheet'
+          href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
+        />
+        <title>FEC Central Library</title>
+      </Head>
+      <div className=' grid grid-cols-3'>
+        {/* Create a card for each book */}
+        {books.map((book) => (
+          <div
+            key={book._id}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/${book._id}`);
+            }}
+          >
+            <BookCard book={book} />
           </div>
-        </div>
+        ))}
       </div>
-    ))}
-  </>
-)
-
-/* Retrieves pet(s) data from mongodb database */
+    </>
+  );
+};
+/* Retrieves book(s) data from mongodb database */
 export async function getServerSideProps() {
-  await dbConnect()
+  await dbConnect();
 
   /* find all the data in our database */
-  const result = await Pet.find({})
-  const pets = result.map((doc) => {
-    const pet = doc.toObject()
-    pet._id = pet._id.toString()
-    return pet
-  })
+  const result = await Book.find({});
+  const books = result.map((doc) => {
+    const book = doc.toObject();
+    book._id = book._id.toString();
+    return book;
+  });
 
-  return { props: { pets: pets } }
+  return { props: { books: books } };
 }
 
-export default Index
+export default Index;

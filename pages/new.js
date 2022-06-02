@@ -1,19 +1,27 @@
-import Form from '../components/Form'
+import Head from "next/head";
+import Form from "../components/Form";
+const NewBook = () => {
+  const bookForm = {
+    name: "",
+    publication: "",
+    bookshelf: "",
+    copies: 0,
+    available: false,
+    author: [],
+    image_url: "",
+    tags: [],
+    about: [],
+  };
 
-const NewPet = () => {
-  const petForm = {
-    name: '',
-    owner_name: '',
-    species: '',
-    age: 0,
-    poddy_trained: false,
-    diet: [],
-    image_url: '',
-    likes: [],
-    dislikes: [],
-  }
+  return (
+    <>
+      {" "}
+      <Head>
+        <title>Add new book</title>
+      </Head>
+      <Form formId='add-book-form' bookForm={bookForm} />
+    </>
+  );
+};
 
-  return <Form formId="add-pet-form" petForm={petForm} />
-}
-
-export default NewPet
+export default NewBook;
